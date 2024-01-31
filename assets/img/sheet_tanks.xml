@@ -1,4 +1,4 @@
-<TextureAtlas imagePath="sheet.png">
+<TextureAtlas imagePath="sheet_tanks.png">
 	<SubTexture name="barrelBeige.png" x="842" y="108" width="16" height="50"/>
 	<SubTexture name="barrelBeige_outline.png" x="840" y="368" width="24" height="58"/>
 	<SubTexture name="barrelBlack.png" x="840" y="426" width="16" height="50"/>

@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
+# Gems
 require 'gosu'
+
+# Local dependencies
+require_relative 'lib/tank'
 
 # The Tanz class will control the set up of the game
 # and the main loop.
@@ -10,6 +14,8 @@ class Tankz < Gosu::Window
   def initialize
     super WINDOW_WIDTH, WINDOW_HEIGHT
     self.caption = 'Tankz'
+
+    @tank = Tank.new(self, Vector2d.new(0, 0), 'black')
   end
 
   def update
@@ -18,6 +24,7 @@ class Tankz < Gosu::Window
 
   def draw
     # Draw the game one frame at the time
+    @tank.draw
   end
 
   def button_down(id)
