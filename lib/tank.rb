@@ -39,18 +39,35 @@ class Tank < GameObject
   def move(direction)
     case direction
     when :up
-      @angle_rot = 0
-      @position += Vector2d.new(0, -TANK_MAX_SPEED)
+      move_up
     when :down
-      @angle_rot = 180
-      @position += Vector2d.new(0, TANK_MAX_SPEED)
+      move_down
     when :right
-      @angle_rot = 90
-      @position += Vector2d.new(TANK_MAX_SPEED, 0)
+      move_right
     when :left
-      @angle_rot = 270
-      @position += Vector2d.new(-TANK_MAX_SPEED, 0)
-
+      move_left
     end
+  end
+
+  private
+
+  def move_up
+    @angle_rot = 0
+    @position += Vector2d.new(0, -TANK_MAX_SPEED)
+  end
+
+  def move_down
+    @angle_rot = 180
+    @position += Vector2d.new(0, TANK_MAX_SPEED)
+  end
+
+  def move_right
+    @angle_rot = 90
+    @position += Vector2d.new(TANK_MAX_SPEED, 0)
+  end
+
+  def move_left
+    @angle_rot = 270
+    @position += Vector2d.new(-TANK_MAX_SPEED, 0)
   end
 end
