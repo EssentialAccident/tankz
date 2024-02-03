@@ -7,8 +7,7 @@ require 'xmlsimple'
 # The class GameObject will bethe base for any game object in the game
 class GameObject
   IMAGE_SCALE = 0.75
-  def initialize(window, position = Vector2d(0, 0))
-    @window = window
+  def initialize(position = Vector2d(0, 0))
     @position = position
     @image = get_image('tank', 'red')
   end

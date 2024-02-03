@@ -15,21 +15,13 @@ class Tankz < Gosu::Window
     super WINDOW_WIDTH, WINDOW_HEIGHT
     self.caption = 'Tankz'
 
-    @player = Tank.new(self, Vector2d.new(0, 0), 'green')
+    @player = Tank.new(Vector2d.new(10, 10), 'green')
   end
 
   def update
     # Update the game one frame at the time
     # Move the player tank
-    if Gosu.button_down? Gosu::KB_W
-      @player.move :up
-    elsif Gosu.button_down? Gosu::KB_S
-      @player.move :down
-    elsif Gosu.button_down? Gosu::KB_A
-      @player.move :left
-    elsif Gosu.button_down? Gosu::KB_D
-      @player.move :right
-    end
+    @player.update
   end
 
   def draw
@@ -43,6 +35,10 @@ class Tankz < Gosu::Window
     when Gosu::KB_ESCAPE
       close
     end
+  end
+
+  def needs_cursor?
+    true
   end
 end
 

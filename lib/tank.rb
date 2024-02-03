@@ -9,65 +9,79 @@ require_relative 'game_object'
 
 # Control the logic of the Tank
 class Tank < GameObject
-  TANK_MAX_SPEED = 10
+  TANK_MAX_SPEED = 5
 
-  def initialize(window, position = Vector2d.new(0, 0), color = 'red')
-    super window, position
-    @image = get_image('tank', color)
-    @angle_rot = 0
+  def initialize(position = Vector2d.new(10, 10), color = 'red')
+    super position
+    @positions = { tank: position,
+                   barrel: Vector2d.new(50, 50) }
+    @images = { tank: get_image('tank', color),
+                barrel: get_image('barrel', color) }
+    @angles = { tank: 0,
+                barrel: 0 }
   end
 
   def update
     # Updates to the tank go here
+    move_tank
+    move_barrel
   end
 
   def draw
     # Image.draw_rot centers the image on the position
     # For that reason, the drawing position needs to be fixed
-    @image.draw_rot(
-      @position.x + ((@image.width / 2) * IMAGE_SCALE),
-      @position.y + ((@image.height / 2) * IMAGE_SCALE),
-      10,
-      @angle_rot,
-      0.5,
-      0.5,
-      IMAGE_SCALE,
-      IMAGE_SCALE
-    )
-  end
-
-  def move(direction)
-    case direction
-    when :up
-      move_up
-    when :down
-      move_down
-    when :right
-      move_right
-    when :left
-      move_left
+    @images.each_key do |object|
+      @images[object].draw_rot(@positions[object].x + ((@images[object].width / 2) * IMAGE_SCALE),
+                               @positions[object].y + ((@images[object].height / 2) * IMAGE_SCALE),
+                               10,
+                               @angles[object],
+                               0.5,
+                               0.5,
+                               IMAGE_SCALE,
+                               IMAGE_SCALE)
     end
   end
 
   private
 
+  def move_tank
+    if Gosu.button_down? Gosu::KB_W
+      move_up
+    elsif Gosu.button_down? Gosu::KB_S
+      move_down
+    elsif Gosu.button_down? Gosu::KB_A
+      move_left
+    elsif Gosu.button_down? Gosu::KB_D
+      move_right
+    end
+  end
+
+  def move_barrel
+    # Ve
+  end
+
   def move_up
-    @angle_rot = 0
-    @position += Vector2d.new(0, -TANK_MAX_SPEED)
+    @angles[:tank] = 0
+    @positions[:tank] += Vector2d.new(0, -TANK_MAX_SPEED)
   end
 
   def move_down
-    @angle_rot = 180
-    @position += Vector2d.new(0, TANK_MAX_SPEED)
+    @angles[:tank] = 180
+    @positions[:tank] += Vector2d.new(0, TANK_MAX_SPEED)
   end
 
   def move_right
-    @angle_rot = 90
-    @position += Vector2d.new(TANK_MAX_SPEED, 0)
+    @angles[:tank] = 90
+    @positions[:tank] += Vector2d.new(TANK_MAX_SPEED, 0)
   end
 
   def move_left
-    @angle_rot = 270
-    @position += Vector2d.new(-TANK_MAX_SPEED, 0)
+    @angles[:tank] = 270
+    @positions[:tank] += Vector2d.new(-TANK_MAX_SPEED, 0)
+  end
+
+  def tank_center
+    Vector2d.new(@positions[:tank].x + (@images[:tank].width / 2),
+                 @positions[:tank].y + (@images[:tank].height / 2))
   end
 end
