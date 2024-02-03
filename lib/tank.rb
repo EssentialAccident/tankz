@@ -10,7 +10,7 @@ require_relative 'game_object'
 # Control the logic of the Tank
 class Tank < GameObject
   TANK_MAX_SPEED = 5
-  BARREL_MAX_SPEED = 2
+  BARREL_MAX_SPEED = 0.5
 
   def initialize(window, position = Vector2d.new(10, 10), color = 'red')
     super window, position
@@ -19,7 +19,7 @@ class Tank < GameObject
     @images = { tank: get_image('tank', color),
                 barrel: get_image('barrel', "#{color}_outline") }
     @angles = { tank: 0,
-                barrel: 0 }
+                barrel: 90 }
   end
 
   def update
@@ -71,7 +71,8 @@ class Tank < GameObject
 
   def angle_barrel
     mouse = Vector2d.new(@window.mouse_x, @window.mouse_y)
-    @angles[:barrel] = (Gosu.radians_to_degrees (tank_center - mouse).angle) - 90
+    future_angle = ((Gosu.radians_to_degrees (tank_center - mouse).angle) - 90) % 360
+    (future_angle - @angles[:barrel]).positive? ? @angles[:barrel] += BARREL_MAX_SPEED : @angles[:barrel] -= BARREL_MAX_SPEED
   end
 
   def move_up
