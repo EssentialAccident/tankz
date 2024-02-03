@@ -15,7 +15,7 @@ class Tankz < Gosu::Window
     super WINDOW_WIDTH, WINDOW_HEIGHT
     self.caption = 'Tankz'
 
-    @player = Tank.new(Vector2d.new(10, 10), 'green')
+    @player = Tank.new(self, Vector2d.new(10, 10), 'green')
   end
 
   def update
