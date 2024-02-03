@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Gems
 require 'gosu'
 require 'vector2d'
@@ -7,6 +9,8 @@ require_relative 'game_object'
 
 # Control the logic of the Tank
 class Tank < GameObject
+  TANK_MAX_SPEED = 10
+
   def initialize(window, position = Vector2d.new(0, 0), color = 'red')
     super window, position
     @image = get_image('tank', color)
@@ -21,10 +25,14 @@ class Tank < GameObject
     # Image.draw_rot centers the image on the position
     # For that reason, the drawing position needs to be fixed
     @image.draw_rot(
-      @position.x + (@image.width / 2),
-      @position.y + (@image.height / 2),
+      @position.x + ((@image.width / 2) * IMAGE_SCALE),
+      @position.y + ((@image.height / 2) * IMAGE_SCALE),
       10,
-      @angle_rot
+      @angle_rot,
+      0.5,
+      0.5,
+      IMAGE_SCALE,
+      IMAGE_SCALE
     )
   end
 
@@ -32,12 +40,16 @@ class Tank < GameObject
     case direction
     when :up
       @angle_rot = 0
+      @position += Vector2d.new(0, -TANK_MAX_SPEED)
     when :down
       @angle_rot = 180
+      @position += Vector2d.new(0, TANK_MAX_SPEED)
     when :right
       @angle_rot = 90
+      @position += Vector2d.new(TANK_MAX_SPEED, 0)
     when :left
       @angle_rot = 270
+      @position += Vector2d.new(-TANK_MAX_SPEED, 0)
 
     end
   end
