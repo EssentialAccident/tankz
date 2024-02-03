@@ -30,24 +30,8 @@ class Tank < GameObject
   end
 
   def draw
-    # Image.draw_rot centers the image on the position
-    # For that reason, the drawing position needs to be fixed
-    @images[:tank].draw_rot(@positions[:tank].x + ((@images[:tank].width / 2) * IMAGE_SCALE),
-                            @positions[:tank].y + ((@images[:tank].height / 2) * IMAGE_SCALE),
-                            10,
-                            @angles[:tank],
-                            0.5,
-                            0.5,
-                            IMAGE_SCALE,
-                            IMAGE_SCALE)
-    @images[:barrel].draw_rot(@positions[:barrel].x + ((@images[:barrel].width / 2) * IMAGE_SCALE),
-                              @positions[:barrel].y + ((@images[:barrel].height / 2) * IMAGE_SCALE),
-                              10,
-                              @angles[:barrel],
-                              0.5,
-                              1.0,
-                              IMAGE_SCALE,
-                              IMAGE_SCALE)
+    draw_tank
+    draw_barrel
   end
 
   private
@@ -72,7 +56,8 @@ class Tank < GameObject
   def angle_barrel
     mouse = Vector2d.new(@window.mouse_x, @window.mouse_y)
     future_angle = ((Gosu.radians_to_degrees (tank_center - mouse).angle) - 90) % 360
-    (future_angle - @angles[:barrel]).positive? ? @angles[:barrel] += BARREL_MAX_SPEED : @angles[:barrel] -= BARREL_MAX_SPEED
+    angle_difference = future_angle - @angles[:barrel]
+    angle_difference.positive? ? @angles[:barrel] += BARREL_MAX_SPEED : @angles[:barrel] -= BARREL_MAX_SPEED
   end
 
   def move_up
@@ -98,5 +83,27 @@ class Tank < GameObject
   def tank_center
     Vector2d.new(@positions[:tank].x + ((@images[:tank].width / 2) * IMAGE_SCALE) - 1,
                  @positions[:tank].y + ((@images[:tank].height / 2) * IMAGE_SCALE))
+  end
+
+  def draw_tank
+    @images[:tank].draw_rot(@positions[:tank].x + ((@images[:tank].width / 2) * IMAGE_SCALE),
+                            @positions[:tank].y + ((@images[:tank].height / 2) * IMAGE_SCALE),
+                            10,
+                            @angles[:tank],
+                            0.5,
+                            0.5,
+                            IMAGE_SCALE,
+                            IMAGE_SCALE)
+  end
+
+  def draw_barrel
+    @images[:barrel].draw_rot(@positions[:barrel].x + ((@images[:barrel].width / 2) * IMAGE_SCALE),
+                              @positions[:barrel].y + ((@images[:barrel].height / 2) * IMAGE_SCALE),
+                              10,
+                              @angles[:barrel],
+                              0.5,
+                              1.0,
+                              IMAGE_SCALE,
+                              IMAGE_SCALE)
   end
 end
