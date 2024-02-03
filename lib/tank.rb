@@ -3,6 +3,7 @@
 # Gems
 require 'gosu'
 require 'vector2d'
+require_relative 'bullet'
 
 # Local dependencies
 require_relative 'game_object'
@@ -20,6 +21,8 @@ class Tank < GameObject
                 barrel: get_image('barrel', "#{color}_outline") }
     @angles = { tank: 0,
                 barrel: 90 }
+    @bullets_fired = []
+    @color = color
   end
 
   def update
@@ -27,11 +30,13 @@ class Tank < GameObject
     move_tank
     position_barrel
     angle_barrel
+    weapon_fire if Gosu.button_down? Gosu::MS_LEFT
   end
 
   def draw
     draw_tank
     draw_barrel
+    @bullets_fired.map(&:draw)
   end
 
   private
@@ -58,6 +63,15 @@ class Tank < GameObject
     future_angle = ((Gosu.radians_to_degrees (tank_center - mouse).angle) - 90) % 360
     angle_difference = future_angle - @angles[:barrel]
     angle_difference.positive? ? @angles[:barrel] += BARREL_MAX_SPEED : @angles[:barrel] -= BARREL_MAX_SPEED
+  end
+
+  def weapon_fire
+    @bullets_fired.append Bullet.new(
+      @window,
+      @positions[:barrel],
+      @color,
+      @angles[:barrel]
+    )
   end
 
   def move_up
