@@ -30,23 +30,22 @@ class Tank < GameObject
   def draw
     # Image.draw_rot centers the image on the position
     # For that reason, the drawing position needs to be fixed
-    @images.each_key do |object|
-      @images[object].draw_rot(@positions[object].x + ((@images[object].width / 2) * IMAGE_SCALE),
-                               @positions[object].y + ((@images[object].height / 2) * IMAGE_SCALE),
-                               10,
-                               @angles[object],
-                               0.5,
-                               0.5,
-                               IMAGE_SCALE,
-                               IMAGE_SCALE)
-    end
-    center = tank_center
-    Gosu.draw_rect(center.x - 2,
-                   center.y - 2,
-                   4,
-                   4,
-                   Gosu::Color::WHITE,
-                   20)
+    @images[:tank].draw_rot(@positions[:tank].x + ((@images[:tank].width / 2) * IMAGE_SCALE),
+                            @positions[:tank].y + ((@images[:tank].height / 2) * IMAGE_SCALE),
+                            10,
+                            @angles[:tank],
+                            0.5,
+                            0.5,
+                            IMAGE_SCALE,
+                            IMAGE_SCALE)
+    @images[:barrel].draw_rot(@positions[:barrel].x + ((@images[:barrel].width / 2) * IMAGE_SCALE),
+                              @positions[:barrel].y + ((@images[:barrel].height / 2) * IMAGE_SCALE),
+                              10,
+                              @angles[:barrel],
+                              0.5,
+                              1.0,
+                              IMAGE_SCALE,
+                              IMAGE_SCALE)
   end
 
   private
@@ -66,10 +65,10 @@ class Tank < GameObject
   def move_barrel
     mouse = Vector2d.new(@window.mouse_x, @window.mouse_y)
     barrel_position = Vector2d.new(((@images[:barrel].width / 2) * IMAGE_SCALE),
-                                   @images[:barrel].height * IMAGE_SCALE)
+                                   (@images[:barrel].height / 2) * IMAGE_SCALE)
     @positions[:barrel] = tank_center - barrel_position
-    vector = mouse - tank_center
-    puts vector.angle
+    vector = tank_center - mouse
+    @angles[:barrel] = (Gosu.radians_to_degrees vector.angle) - 90
   end
 
   def move_up
