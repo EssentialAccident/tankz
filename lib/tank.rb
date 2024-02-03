@@ -25,7 +25,8 @@ class Tank < GameObject
   def update
     # Updates to the tank go here
     move_tank
-    move_barrel
+    position_barrel
+    angle_barrel
   end
 
   def draw
@@ -63,10 +64,13 @@ class Tank < GameObject
     end
   end
 
-  def move_barrel
-    mouse = Vector2d.new(@window.mouse_x, @window.mouse_y)
+  def position_barrel
     @positions[:barrel] = tank_center - Vector2d.new(((@images[:barrel].width / 2) * IMAGE_SCALE),
                                                      (@images[:barrel].height / 2) * IMAGE_SCALE)
+  end
+
+  def angle_barrel
+    mouse = Vector2d.new(@window.mouse_x, @window.mouse_y)
     @angles[:barrel] = (Gosu.radians_to_degrees (tank_center - mouse).angle) - 90
   end
 
